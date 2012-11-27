@@ -1,3 +1,7 @@
+微薄：<a href="http://weibo.com/sunblessyou">@灵魂猥亵</a>
+邮箱：i@jiongsun.com
+
+
 Actionscript的收、发包逻辑
 
 	private function onProgress(evt:ProgressEvent):void

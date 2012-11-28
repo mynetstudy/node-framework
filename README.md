@@ -1,4 +1,4 @@
-微薄：<a href="http://weibo.com/sunblessyou">@灵魂猥亵</a>
+微博：<a href="http://weibo.com/sunblessyou">@灵魂猥亵</a>
 邮箱：i@jiongsun.com
 
 

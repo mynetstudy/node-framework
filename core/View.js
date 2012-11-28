@@ -1,4 +1,5 @@
 var sessionManager = require('./SessionManager');
+var Data = require('./Data');
 
 function View(params, session)
 {
@@ -43,24 +44,13 @@ View.prototype.display = function()
 
 		if (model.hasOwnProperty('to'))
 		{
-			this.emit(model.to, this.getBuffer(model));
+			this.emit(model.to, new Data(model));
 		}
 		else
 		{
-			this.emits(this.getBuffer(model));
+			this.emits(new Data(model));
 		}
 	}
-}
-
-View.prototype.getBuffer = function(data)
-{
-	delete data.to;
-
-	var data = JSON.stringify(data);
-	var buffer = new Buffer(data.length + 4);
-	buffer.writeInt32BE(data.length, 0);
-	buffer.write(data, 4, buffer.length, 'utf8');
-	return buffer;
 }
 
 View.prototype.emits = function(buffer)

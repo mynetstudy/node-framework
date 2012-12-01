@@ -16,7 +16,7 @@ Data.prototype.getBuffer = function(data)
 
 	var data = JSON.stringify(data);
 	var buffer = new Buffer(data.length + 4);
-	buffer.writeInt32BE(data.length, 0);
+	buffer.writeUInt32BE(data.length, 0);
 	buffer.write(data, 4, buffer.length, 'utf8');
 	return buffer;
 }

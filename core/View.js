@@ -13,11 +13,6 @@ View.prototype.push = function (data)
 {
 	var data = arguments[0] || {};
 
-	if (!data.hasOwnProperty('to') && this.sessionId != null)
-	{
-		data.to = [this.sessionId];
-	}
-	
 	if (!data.hasOwnProperty('op'))
 	{
 		data.op = this.params.op + 1;

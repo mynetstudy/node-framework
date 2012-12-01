@@ -9,6 +9,7 @@ function Session(socket)
 	this.sessionId = null;
 	this.crossdomain = '<cross-domain-policy><allow-access-from domain="*" /></cross-domain-policy>';
 	this.isconnect = true;
+	this.msg = '';
 	
 	socket.setEncoding(this.charset);
 	socket.setNoDelay(true);
@@ -46,35 +47,32 @@ Session.prototype.receiveHandler = function(msg)
 		return;
 	}
 	
+	this.msg += msg;
+	
+	if (msg.lastIndexOf('\\0') != msg.length - 2)
+	{
+		return;
+	}
+
 	try
 	{
-		var buffer = new Buffer(msg, this.charset);
-		var offset = 0;
+		var result = this.msg.split("\\0");
 		
-		while(offset < buffer.length)
+		for (var i = 0, max = result.length - 1 ; i < max ; i ++)
 		{
-			var lenght = buffer.readUInt32BE(offset);
-			var dataLength = buffer.readInt16BE(offset + 4);
-			var data = buffer.slice(offset + 6 , offset + 6 + dataLength).toString();
-
-			try
-			{
-				var dispatcher = new Dispatcher(this, JSON.parse(data));
-				var view = dispatcher.dispatch();
-				view.display();
-			}
-			catch(exception)
-			{
-				this.emit(new Data(JSON.stringify(exception)));
-			}
+			//console.log('data', result[i]);
 			
-			offset += lenght;
+			var dispatcher = new Dispatcher(this, JSON.parse(result[i]));
+			var view = dispatcher.dispatch();
+			view.display();
 		}
+		
+		this.msg = '';
 	}
 	catch(exception)
 	{
+		console.log('exception', exception);	
 		this.emit(new Data(JSON.stringify(exception)));
-		this.disconnect();
 	}
 }
 
@@ -90,6 +88,8 @@ Session.prototype.errorHandler = function()
 
 Session.prototype.emit = function(buffer)
 {
+	//console.log('emit', this.isconnect, this.sessionId, buffer);
+	
 	if (this.isconnect)
 	{
 		this.socket.write(buffer);

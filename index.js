@@ -1,2 +1,2 @@
 var server = require('./core/Server');
-server.run('192.168.1.102', 8111);
+server.run('0.0.0.0', 8111);

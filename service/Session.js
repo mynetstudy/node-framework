@@ -1,9 +1,11 @@
 var Exception = require('../core/Exception');
 
 module.exports = {
-	ping : function()
+	ping : function(params, view)
 	{
-		console.log('ping');
+		view.push({
+			to : [view.getSession().getId()]
+		});
 	},
 	login : function (params, view)
 	{

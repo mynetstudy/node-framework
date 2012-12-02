@@ -33,6 +33,9 @@ Session.prototype.getId = function()
 Session.prototype.disconnect = function()
 {
 	var sessionId = this.getId();
+	
+	console.log('disconnect', sessionId);
+	
 	if (sessionId != null) sessionManager.removeById(sessionId);
 	this.isconnect = false;
 	this.socket.end();
@@ -53,6 +56,8 @@ Session.prototype.receiveHandler = function(msg)
 	{
 		return;
 	}
+	
+	console.log('msg', this.msg);
 
 	try
 	{
@@ -60,8 +65,6 @@ Session.prototype.receiveHandler = function(msg)
 		
 		for (var i = 0, max = result.length - 1 ; i < max ; i ++)
 		{
-			//console.log('data', result[i]);
-			
 			var dispatcher = new Dispatcher(this, JSON.parse(result[i]));
 			var view = dispatcher.dispatch();
 			view.display();
@@ -88,7 +91,7 @@ Session.prototype.errorHandler = function()
 
 Session.prototype.emit = function(buffer)
 {
-	//console.log('emit', this.isconnect, this.sessionId, buffer);
+	console.log('emit', this.isconnect, this.sessionId, buffer);
 	
 	if (this.isconnect)
 	{
